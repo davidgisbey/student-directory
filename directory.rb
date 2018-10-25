@@ -1,9 +1,9 @@
-
+@students = [] 
 def print_header
 puts "The students of Villains Academy".center(40)
 puts "------------".center(40)
 end 
-def print(students)
+def print_students_list(students)
     while true do 
       students.each do |student|
        if student[:name].length < 12 && student[:name].downcase.chars[0] == "h"
@@ -18,15 +18,14 @@ def print(students)
 end 
 def print_footer(names)
   if names.length == 0
-    puts "We have no students"
+    puts "We have no students\n"
   elsif names.length == 1
-    puts "We have 1 student"
+    puts "We have 1 student\n"
   elsif
-    puts "Overall, we have #{names.count} great students"
+    puts "Overall, we have #{names.count} great studentszn"
   end 
 end 
 def input_students
-  students = []
   def_cohort = "November"
   while true do 
       puts "Please enter the names of the student"
@@ -46,19 +45,54 @@ def input_students
       input = gets.chomp
       if input == "yes" 
         $count1 += 1
-        students << {name: name, cohort: cohort.downcase.to_sym, sex: sex, height: height, hobby: hobby}
-        student_count = "Now we have #{students.count} student" 
+        @students << {name: name, cohort: cohort.downcase.to_sym, sex: sex, height: height, hobby: hobby}
+        student_count = "Now we have #{@students.count} student" 
         final_count = "#{student_count.to_s}s" if $count1 > 1
         puts final_count
       end 
   end 
-  students
+  @students
 end 
 
+def interactive_menu
+    loop do 
+    # 1. print the menu and ask the user what to do
+    print_menu
+    # 2. read the input and save it into a variable
+    selection = gets.chomp
+    # 3. do what the user has asked
+    process(selection)
+end 
+end
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit" # 9 because we'll be adding more items  
+end
+def show_students
+  print_header
+  print_students_list(@students)
+  print_footer(@students)
+end
+
+def process(selection)
+  case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "9"
+      exit
+    else
+      puts "I don't know what you mean, try again"
+  end
+end
+	
 
 $count1 = 0
 $count = 1
-students = input_students
+interactive_menu
+@students = input_students
 print_header
 print(students)
 print_footer(students)
